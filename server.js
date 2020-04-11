@@ -17,9 +17,6 @@ app.use(function (req, res,next){
 });
 var router = express.Router();
 
-// To test routes
-app.get('/',(req, res)=> res.sendFile(path.join(__dirname+ '/login.html')));
-
 // Auth routes
 router.post('/register',login.register);
 router.post('/login',login.login);
