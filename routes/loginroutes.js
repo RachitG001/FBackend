@@ -10,10 +10,20 @@ exports.register = function (req,res){
     var hashp = bcrypt.hashSync(req.body.password,saltRounds);
     var today = new Date();
     var users = {
+        "name": req.body.name,
         "username": req.body.username,
+        "email": req.body.email,
         "password": hashp,
-        "created": today,
-        "modified": today
+        "countryExt": "+91",
+        "mobile": req.body.mobile,
+        "imageUrl": req.body.imageUrl|| null,
+        "bio": "Student",
+        "dob": "Feb",
+        "gender": req.body.gender,
+        "isEmailVerified": true,
+        "utype": 1,
+        "createdAt": today,
+        "updatedAt": today
         }
 
     connection.query('INSERT INTO users SET ?', users, function(err,results,fields){
