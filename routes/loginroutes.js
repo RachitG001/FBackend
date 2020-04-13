@@ -21,7 +21,7 @@ exports.register = function (req,res){
         "dob": "Feb",
         "gender": req.body.gender,
         "isEmailVerified": true,
-        "utype": 1,
+        "type": 1,
         "createdAt": today,
         "updatedAt": today
         }
