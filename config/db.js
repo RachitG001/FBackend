@@ -12,7 +12,7 @@ connection.connect(function (err){
         console.log("Database is connected successfully......");
     }
     else{
-        console.log("Error connecting database.....");
+        console.log("Error connecting database....." , err);
     }
 });
 

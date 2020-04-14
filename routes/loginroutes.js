@@ -98,3 +98,31 @@ exports.login = function (req,res){
         }
     });
 }
+
+
+exports.getUsers = function (req,res){
+
+ 
+
+    connection.query('SELECT username FROM users', null , function(err, results, fields){
+
+        if (err) {
+            console.log(err)
+            res.send({
+                "Code": 400,
+                "failed": "Error occured"
+            });
+        }
+        else{
+            if (results.length>0){
+               res.send(results)
+            }
+            else{
+                res.send({
+                    "Code": 204,
+                    "Status": "Error"
+                });
+            }
+        }
+    });
+}

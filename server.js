@@ -23,4 +23,6 @@ router.post('/login',login.login);
 app.get('/api',(req , res) => {
     res.send('Hey there!')
 });
+
+app.get('/getUsers' , login.getUsers)
 app.listen(5000);
