@@ -20,5 +20,7 @@ var router = express.Router();
 router.post('/register',login.register);
 router.post('/login',login.login);
 
-app.use('/api',router);
+app.get('/api',(req , res) => {
+    res.send('Hey there!')
+});
 app.listen(5000);

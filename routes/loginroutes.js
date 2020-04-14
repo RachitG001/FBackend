@@ -19,7 +19,7 @@ exports.register = function (req,res){
         "imageUrl": req.body.imageUrl|| null,
         "bio": "Student",
         "dob": "Feb",
-        "gender": req.body.gender,
+        "gender": req.body.gender || null,
         "isEmailVerified": true,
         "type": 1,
         "createdAt": today,
@@ -32,14 +32,14 @@ exports.register = function (req,res){
         {
             res.send({
                 "code": 400,
-                "Status": "This username already exists..."
+                "Status": "This username already exists."
             });
         }
     else
         {
             res.send({
                 "code": 200,
-                "Status": "User created successfully..."
+                "Status": "User created successfully."
             });
         }
     });
