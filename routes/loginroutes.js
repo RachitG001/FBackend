@@ -6,6 +6,7 @@ connection = require('./../config/db');
 global.config = require('./../config/config');
 
 exports.register = function (req,res){
+    console.log('entered in register')
 
     var hashp = bcrypt.hashSync(req.body.password,saltRounds);
     var today = new Date();

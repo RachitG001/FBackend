@@ -17,8 +17,8 @@ app.use(function (req, res,next){
 var router = express.Router();
 
 // Auth routes
-router.post('/register',login.register);
-router.post('/login',login.login);
+app.post('/register',login.register);
+app.post('/login',login.login);
 
 app.get('/api',(req , res) => {
     res.send('Hey there!')
