@@ -31,6 +31,7 @@ exports.register = function (req,res){
 
     if (err)
         {
+            console.log(err)
             res.send({
                 "code": 400,
                 "Status": "This username already exists."
@@ -54,6 +55,7 @@ exports.login = function (req,res){
     connection.query('SELECT * FROM users WHERE username = ?',username,function(err, results, fields){
 
         if (err) {
+            console.log(err)
             res.send({
                 "Code": 400,
                 "failed": "Error occured"
