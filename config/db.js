@@ -1,10 +1,10 @@
 var mysql = require('mysql');
 
 var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'follegedb'
+    host: process.env.HOST || 'localhost',
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DB,
 });
 
 connection.connect(function (err){
@@ -12,7 +12,7 @@ connection.connect(function (err){
         console.log("Database is connected successfully......");
     }
     else{
-        console.log("Error connecting database.....");
+        console.log("Error connecting database.....", err);
     }
 });
 

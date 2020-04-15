@@ -1,5 +1,0 @@
-{
-    "secret" : "some_secret_key",
-    "refreshTokenSecret" : "refresh_token_secret",
-    "tokenLife" : "5m"
-}
