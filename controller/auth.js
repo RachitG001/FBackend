@@ -11,17 +11,16 @@ const jwtRefreshTokenSecret = process.env.jwtRefreshTokenSecret;
 module.exports={
     register:function (req,res){
         console.log("Register api")
-        console.log(req.body);
-        var hashp = bcrypt.hashSync(req.body.password,saltRounds);
-        if (hashp == undefined)
+        if (!req.body.username || !req.body.password || !req.body.name || !req.body.email)
         {
-            console.log('Invalid password');
+            console.log('Invalid input');
             res.send({
                 "code": 422,
-                "Status": "Invalid password"
+                "Status": "Invalid input"
             });
             return;
         }
+        var hashp = bcrypt.hashSync(req.body.password,saltRounds);
         var today = new Date();
         var users = {
             "name": req.body.name,
@@ -29,7 +28,7 @@ module.exports={
             "email": req.body.email,
             "password": hashp,
             "countryExt": "+91",
-            "mobile": req.body.mobile,
+            "mobile": req.body.mobile || null,
             "imageUrl": req.body.imageUrl|| null,
             "bio": "Student",
             "dob": "Feb",
