@@ -16,7 +16,11 @@ module.exports={
         if (hashp == undefined)
         {
             console.log('Invalid password');
-            res.status(422).end();
+            res.send({
+                "code": 422,
+                "Status": "Invalid password"
+            });
+            return;
         }
         var today = new Date();
         var users = {
@@ -60,6 +64,17 @@ module.exports={
 
         var username = req.body.username;
         var password = req.body.password;
+        console.log(password);
+
+        if (password == undefined)
+        {
+            console.log('Invalid password');
+            res.send({
+                "code": 422,
+                "Status": "Invalid password"
+            });
+            return;
+        }
 
         connection.query('SELECT * FROM users WHERE username = ?',username,function(err, results, fields){
 

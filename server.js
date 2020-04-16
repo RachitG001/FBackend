@@ -1,10 +1,8 @@
-require('dotenv-safe').config({
-    overwrite: true
-});
+require('dotenv').config();
 const express = require('express');
 const router = require('./routes/routes');
 const app = express();
-app.use(express.urlencoded({ extented: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(function (req, res,next){
