@@ -14,6 +14,11 @@ app.use(function (req, res,next){
 
 app.use(router);
 
+app.use("*",function(req,res){
+    console.log('Invalid Url');
+    res.sendStatus(404);
+  });
+
 app.listen(process.env.PORT,()=>{
     console.log("Server is running");
 });

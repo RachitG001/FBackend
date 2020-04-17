@@ -118,7 +118,7 @@ module.exports={
                 else{
                     res.send({
                         "Code": 204,
-                        "Status": "Email does not exist"
+                        "Status": "User does not exist"
                     });
                 }
             }
@@ -138,7 +138,7 @@ module.exports={
             }
             else{
                 if (results.length>0){
-                   res.send(results)
+                   res.send(results);
                 }
                 else{
                     res.send({
