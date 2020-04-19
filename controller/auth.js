@@ -9,26 +9,37 @@ module.exports={
         console.log("Register api")
 
         User.create(req.body).then((user)=>{
-            res.send(user.toJSON());
+            res.status(200).json("User created successfully");
             return;
         }).catch((err)=>{
             res.status(400).send(err);
         })
     },
 
-    getUsers : function (req,res){
-        console.log('Get all users');
-
+    getUsername: function(req,res){
+        console.log('Get all username');
         User.findAll({
-            attributes: {
-                exclude: ['password']
-            }
+            attributes: ['username']
         }).then((users)=>{
             res.json(users);
         }).catch((err)=>{
             res.status(400).send(err);
         })
     },
+
+    // getUsers : function (req,res){
+    //     console.log('Get all users');
+
+    //     User.findAll({
+    //         attributes: {
+    //             exclude: ['password']
+    //         }
+    //     }).then((users)=>{
+    //         res.json(users);
+    //     }).catch((err)=>{
+    //         res.status(400).send(err);
+    //     })
+    // },
 
     login: (req,res,next)=>{
         // req.check('password').exist();

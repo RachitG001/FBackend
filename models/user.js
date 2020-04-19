@@ -16,10 +16,10 @@ module.exports = (sequelize, type) => {
         username: {
             type: type.STRING,
             unique: true,
-            allowNull: false
-            // validate: {
-            //     is: /^[a-z0-9\_\-]+$/i,
-            //   }
+            allowNull: false,
+            validate: {
+                is: /^[a-z0-9\_\-]+$/i,
+              }
         },
         email: {
             type: type.STRING,
@@ -76,11 +76,6 @@ module.exports = (sequelize, type) => {
               user.password = bcrypt.hashSync(user.password, salt);
             },
           },
-        //   instanceMethods: {
-        //     User.prototype.validPassword= function(password) {
-        //       return bcrypt.compareSync(password, this.password);
-        //     },
-        //   }
       }
     );
     User.prototype.validPassword= function(password) {

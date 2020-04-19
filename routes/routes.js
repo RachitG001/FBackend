@@ -9,6 +9,6 @@ router.get('/api',(req, res)=>{
 // Define your api routes here
 router.post('/api/register',auth.register);
 router.post('/api/login', auth.login);
-router.get('/api/getUsers',auth.getUsers);
+router.get('/api/getUser',auth.getUsername);
 
 module.exports = router;
