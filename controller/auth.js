@@ -1,153 +1,51 @@
-connection = require('.././config/db');
+const {User} = require('../config/sequelize');
 const express = require('express');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const saltRounds = 10;
-const tokenLife = process.env.tokenLife;
-const refreshTokenLife = process.env.refreshTokenLife;
-const jwtTokenSecret = process.env.jwtTokenSecret;
-const jwtRefreshTokenSecret = process.env.jwtRefreshTokenSecret;
+const passport = require('passport');
+// const { check, validationResult} = require('express-validator')
 
 module.exports={
+
     register:function (req,res){
         console.log("Register api")
-        if (!req.body.username || !req.body.password || !req.body.name || !req.body.email)
-        {
-            console.log('Invalid input');
-            res.send({
-                "code": 422,
-                "Status": "Invalid input"
-            });
+
+        User.create(req.body).then((user)=>{
+            res.send(user.toJSON());
             return;
-        }
-        var hashp = bcrypt.hashSync(req.body.password,saltRounds);
-        var today = new Date();
-        var users = {
-            "name": req.body.name,
-            "username": req.body.username,
-            "email": req.body.email,
-            "password": hashp,
-            "countryExt": "+91",
-            "mobile": req.body.mobile || null,
-            "imageUrl": req.body.imageUrl|| null,
-            "bio": "Student",
-            "dob": "Feb",
-            "gender": req.body.gender || null,
-            "isEmailVerified": true,
-            "type": 1,
-            "createdAt": today,
-            "updatedAt": today
-            }
-
-        connection.query('INSERT INTO users SET ?', users, function(err,results,fields){
-
-        if (err)
-            {
-                console.log(err);
-                res.send({
-                    "code": 400,
-                    "Status": "This username already exists."
-                });
-            }
-        else
-            {
-                res.send({
-                    "code": 200,
-                    "Status": "User created successfully."
-                });
-            }
-        });
-    },
-
-    login:function (req,res){
-
-        var username = req.body.username;
-        var password = req.body.password;
-        console.log(password);
-
-        if (password == undefined)
-        {
-            console.log('Invalid password');
-            res.send({
-                "code": 422,
-                "Status": "Invalid password"
-            });
-            return;
-        }
-
-        connection.query('SELECT * FROM users WHERE username = ?',username,function(err, results, fields){
-
-            if (err) {
-                console.log(err);
-                res.send({
-                    "Code": 400,
-                    "failed": "Error occured"
-                });
-            }
-            else{
-                if (results.length>0){
-                    bcrypt.compare(password,results[0].password,(err,resp)=>{
-                        if(resp == false){
-                            res.send({
-                                "Code": 204,
-                                "Status": "Email & password do not match"
-                            });
-                        }
-                        else{
-                            var options = {
-                             expiresIn: 3000
-                            }
-                            var token = jwt.sign({
-                                expiresIn: tokenLife,
-                                data: password
-                            },jwtTokenSecret);
-                            const refreshToken = jwt.sign({
-                                expiresIn: refreshTokenLife,
-                                data: password
-                            },jwtRefreshTokenSecret);
-
-                            res.send({
-                                "Code": 200,
-                                "Status": "Login successfull",
-                                "token": token,
-                                "refreshToken": refreshToken
-                            });
-                        }
-                    })
-                }
-                else{
-                    res.send({
-                        "Code": 204,
-                        "Status": "User does not exist"
-                    });
-                }
-            }
-        });
+        }).catch((err)=>{
+            res.status(400).send(err);
+        })
     },
 
     getUsers : function (req,res){
+        console.log('Get all users');
 
-        connection.query('SELECT username FROM users', null , function(err, results, fields){
-
-            if (err) {
-                console.log(err)
-                res.send({
-                    "Code": 400,
-                    "failed": "Error occured"
-                });
+        User.findAll({
+            attributes: {
+                exclude: ['password']
             }
-            else{
-                if (results.length>0){
-                   res.send(results);
-                }
-                else{
-                    res.send({
-                        "Code": 204,
-                        "Status": "Error"
-                    });
-                }
-            }
-        });
+        }).then((users)=>{
+            res.json(users);
+        }).catch((err)=>{
+            res.status(400).send(err);
+        })
+    },
 
+    login: (req,res,next)=>{
+        // req.check('password').exist();
+        // req.check('username').exist();
+
+        // const errors = body(req);
+        // if(errors){
+        //     res.status(400).send(errors);
+        // }
+
+        console.log('login api')
+        passport.authenticate('login',{session:false},(err,user,info)=>{
+            if(!user)
+            {
+                res.status(401).json({error:info})
+            }
+            res.status(200).json("Login successful");
+        })(req, res, next);
     }
 }
